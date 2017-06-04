@@ -1,6 +1,8 @@
-package com.example.john.muchat;
+package com.example.john.muchat.activities;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.view.Menu;
@@ -15,6 +17,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.example.common.app.Activity;
+import com.example.john.muchat.R;
 import com.example.john.muchat.activities.AccountActivity;
 import com.example.john.muchat.assist.PermissionsFragment;
 import com.example.john.muchat.fragments.main.ActiveFragment;
@@ -45,6 +48,11 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     @BindView(R.id.navigation)
     BottomNavigationView navigation;
 
+    public static void show(Context context){
+        //进入主界面
+        context.startActivity(new Intent(context,MainActivity.class));
+    }
+
     @Override
     protected int getContentLayoutID() {
         return R.layout.activity_main;
@@ -68,7 +76,6 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
                         //this指的是view Target
                     }
                 });
-        PermissionsFragment.haveAllPermissions(this,getSupportFragmentManager());
     }
 
     @Override

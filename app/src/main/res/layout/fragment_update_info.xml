@@ -1,0 +1,16 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.john.muchat.fragments.account.UpdateInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <com.example.common.widget.PortraitView
+        android:id="@+id/portrait"
+        android:src="@color/colorAccent"
+        android:layout_gravity="center"
+        android:scaleType="centerCrop"
+        android:layout_width="@dimen/portraitMaxSize"
+        android:layout_height="@dimen/portraitMaxSize" />
+
+</FrameLayout>

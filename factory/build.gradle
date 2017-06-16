@@ -27,6 +27,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':common')
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:4.0.0-beta7"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:4.0.0-beta7"
+    compile "com.github.Raizlabs.DBFlow:dbflow:4.0.0-beta7"
     compile "com.aliyun.dpa:oss-android-sdk:2.3.0"
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile "com.squareup.retrofit2:converter-gson:2.3.0"
     testCompile 'junit:junit:4.12'
 }

@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.john.muchat.activities.AccountActivity">
     <ImageView
+        android:id="@+id/background"
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <FrameLayout

@@ -11,6 +11,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "KkQPxYEsw99WbeiHiOcoN7",
+                GETUI_APP_KEY   : "bDBs2GWdkl9B56YL5GwCk1",
+                GETUI_APP_SECRET: "C0mQjT6g8772f4rNG3fIk9",
+                PACKAGE_NAME    : applicationId
+        ]
     }
     buildTypes {
         release {
@@ -39,5 +45,10 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'pub.devrel:easypermissions:0.4.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile "com.squareup.retrofit2:converter-gson:2.3.0"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile "com.getui:sdk:2.9.3.0"
 }

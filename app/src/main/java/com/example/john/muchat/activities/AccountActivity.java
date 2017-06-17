@@ -58,8 +58,8 @@ public class AccountActivity extends Activity implements AccountTrigger {
     protected void initWidget() {
         super.initWidget();
         //默认是登陆界面,此时注册界面为空
-        registerFragment=new RegisterFragment();
-        currentFragment=registerFragment;
+        loginFragment = new LoginFragment();
+        currentFragment=loginFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, currentFragment).commit();
         //初始化登陆背景图片
@@ -74,7 +74,8 @@ public class AccountActivity extends Activity implements AccountTrigger {
                 //默认情况下为空,初始化
                 registerFragment = new RegisterFragment();
             }
-            fragment = registerFragment;
+            fragment=registerFragment;
+            //fragment = registerFragment;
         } else {
             fragment = loginFragment;
         }
@@ -82,22 +83,22 @@ public class AccountActivity extends Activity implements AccountTrigger {
         currentFragment = fragment;
         //切换显示
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.layout_container, fragment)
+                .replace(R.id.container, fragment)
                 .commit();
     }
 
     //加载必应每日一图
-    public void loadBingPic(){
+    public void loadBingPic() {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
-                    OkHttpClient client=new OkHttpClient();
-                    Request request=new Request.Builder()
+                try {
+                    OkHttpClient client = new OkHttpClient();
+                    Request request = new Request.Builder()
                             .url("http://guolin.tech/api/bing_pic")
                             .build();
                     Response response = client.newCall(request).execute();
-                    final String responseData=response.body().string();
+                    final String responseData = response.body().string();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -107,7 +108,7 @@ public class AccountActivity extends Activity implements AccountTrigger {
                                     .into(background);
                         }
                     });
-                }catch (IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

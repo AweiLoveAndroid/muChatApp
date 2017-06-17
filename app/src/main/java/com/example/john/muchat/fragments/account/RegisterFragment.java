@@ -4,7 +4,9 @@ package com.example.john.muchat.fragments.account;
 import android.content.Context;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.common.app.PresenterFragment;
 import com.example.common.factory.presenter.BaseContract;
@@ -49,7 +51,7 @@ public class RegisterFragment extends PresenterFragment<RegisterContract.Present
     @OnClick(R.id.login)
     void onShowLoginClick(){
         //界面切换,暂时还是别切了
-        //accountTrigger.triggerView();
+        accountTrigger.triggerView();
     }
 
     @Override

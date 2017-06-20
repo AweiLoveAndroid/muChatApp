@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.john.muchat.fragments.account.LoginFragment"
-    tools:background="@drawable/bg_src_tianjin">
+    tools:context="com.example.john.muchat.fragments.account.LoginFragment">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"

@@ -22,7 +22,7 @@ import butterknife.OnClick;
  * A simple {@link Fragment} subclass.
  */
 public class LoginFragment extends PresenterFragment<LoginContract.Presenter>
-implements LoginContract.View{
+        implements LoginContract.View {
     @BindView(R.id.edit_phone)
     EditText phone;
     @BindView(R.id.edit_password)
@@ -50,16 +50,18 @@ implements LoginContract.View{
         //拿到activity的引用
         accountTrigger = (AccountTrigger) context;
     }
+
     @OnClick(R.id.btn_submit)
-    void onSubmitClick(){
-        String phone=this.phone.getText().toString();
-        String password=this.password.getText().toString();
-        //调用p层进行注册
-        presenter.login(phone,password);
+    void onSubmitClick() {
+        String phone = this.phone.getText().toString();
+        String password = this.password.getText().toString();
+        //调用p层进行登陆
+        presenter.login(phone, password);
     }
+
     @OnClick(R.id.txt_go_register)
-    void onShowRegisterClick(){
-        Log.d("click","login");
+    void onShowRegisterClick() {
+        Log.d("click", "login");
         accountTrigger.triggerView();
     }
 
@@ -82,6 +84,7 @@ implements LoginContract.View{
         this.password.setEnabled(true);
         submit.setEnabled(true);
     }
+
     @Override
     protected int getContentLayoutID() {
         return R.layout.fragment_login;

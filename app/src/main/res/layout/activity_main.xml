@@ -29,7 +29,7 @@
                 android:foreground="@drawable/ic_touch_menu"
                 android:padding="@dimen/len_4"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_portrait" />
+                android:src="@drawable/captain_america_portrait" />
 
             <TextView
                 android:id="@+id/title"

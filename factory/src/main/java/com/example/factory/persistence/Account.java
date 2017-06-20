@@ -3,6 +3,7 @@ package com.example.factory.persistence;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.example.factory.Factory;
 import com.example.factory.model.api.account.AccountRspModel;
@@ -21,10 +22,9 @@ public class Account {
 
     private static final String KEY_PUSH_ID = "KEY_PUSH_ID";
     private static final String KEY_IS_BIND = "KEY_IS_BIND";
-    private static final String KEY_TOKEN="KEY_TOKEN";
-    private static final String KEY_USER_ID="KEY_USER_ID";
-    private static final String KEY_ACCOUNT="KEY_ACCOUNT";
-
+    private static final String KEY_TOKEN = "KEY_TOKEN";
+    private static final String KEY_USER_ID = "KEY_USER_ID";
+    private static final String KEY_ACCOUNT = "KEY_ACCOUNT";
 
 
     private static boolean isBind;
@@ -37,9 +37,9 @@ public class Account {
         sharedPreferences.edit().
                 putString(KEY_PUSH_ID, pushId).
                 putBoolean(KEY_IS_BIND, isBind).
-                putString(KEY_TOKEN,token).
-                putString(KEY_USER_ID,userId).
-                putString(KEY_ACCOUNT,account)
+                putString(KEY_TOKEN, token).
+                putString(KEY_USER_ID, userId).
+                putString(KEY_ACCOUNT, account)
                 .apply();
     }
 
@@ -101,7 +101,6 @@ public class Account {
     }
 
 
-
     /**
      * 返回当前账号是否登陆
      *
@@ -109,25 +108,40 @@ public class Account {
      */
     public static boolean isLogin() {
         //用户ID和token均不为空
-        return !TextUtils.isEmpty(userId)&&!TextUtils.isEmpty(token);
+        return !TextUtils.isEmpty(userId) && !TextUtils.isEmpty(token);
     }
 
     /**
      * 用户信息是否已经完善
+     *
      * @return
      */
-    public static boolean isComplete(){
+    public static boolean isComplete() {
+        //首先保证登陆成功
         //TODO
-        return isLogin();
+        if (isLogin()) {
+            User self = getUser();
+            Log.d("UpdateInfoFragment",":"+self.toString());
+            if (TextUtils.isEmpty(self.getDescription()))
+                Log.d("MainActivity:", "描述为空");
+            if (TextUtils.isEmpty(self.getPortrait()))
+                Log.d("MainActivity:", "头像为空");
+            if (self.getSex()==0)
+                Log.d("MainActivity:", "性别为空");
+            return !TextUtils.isEmpty(self.getDescription()) && !TextUtils.isEmpty(self.getPortrait()) &&
+                    self.getSex() != 0;
+        }
+        return false;//未登录，返回信息不完全
     }
 
     /**
      * 获取当前登录的用户信息
+     *
      * @return
      */
-    public static User getUser(){
+    public static User getUser() {
         //如果为null就返回新的user，否则就是从数据库中找
-        return TextUtils.isEmpty(userId)?new User():SQLite.select()
+        return TextUtils.isEmpty(userId) ? new User() : SQLite.select()
                 .from(User.class)
                 .where(User_Table.id.eq(userId))
                 .querySingle();
@@ -140,13 +154,14 @@ public class Account {
      */
     public static void login(AccountRspModel model) {
         //存储当前登录用户的基本信息
-        Account.token=model.getToken();
-        Account.account=model.getAccount();
-        Account.userId=model.getUser().getId();
+        Account.token = model.getToken();
+        Account.account = model.getAccount();
+        Account.userId = model.getUser().getId();
         save(Factory.app());
     }
+
     //获取token
-    public static String getToken(){
+    public static String getToken() {
         return token;
     }
 }

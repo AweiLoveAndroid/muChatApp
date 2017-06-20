@@ -1,44 +1,34 @@
-package com.example.factory.model.db;
+package com.example.factory.model.card;
 
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.example.factory.model.db.User;
 
 import java.util.Date;
 
 /**
- * Created by John on 2017/6/11.
+ * Created by John on 2017/6/19.
  */
-@Table(database = AppDataBase.class)
-public class User extends BaseModel{
-    public static final int MAN=1;
-    public static final int WOMAN=2;
-    @PrimaryKey
-    private String id;
-    @Column
-    private String name;
-    @Column
-    private String phone;
-    @Column
-    private String portrait;
-    @Column
-    private String description;
-    @Column
-    private int sex=0;
 
-    @Column
+public class UserCard {
+    private String id;
+    private String name;
+    private String phone;
+    private String portrait;
+    private String description;
+    private int sex = 0;
+    // 用户关注人的数量
     private int follows;
-    @Column
+
+    // 用户粉丝的数量
     private int following;
-    @Column
+
+    // 我与当前User的关系状态，是否已经关注了这个人
     private boolean isFollow;
 
-    @Column
+    // 用户信息最后的更新时间
     private Date modifyAt;
 
-    @Column
-    private String alias;//对好友的备注信息
+    // 缓存一个对应的User, 不能被GSON框架解析使用ø
+    private transient User user;
 
     public String getId() {
         return id;
@@ -120,28 +110,45 @@ public class User extends BaseModel{
         this.modifyAt = modifyAt;
     }
 
-    public String getAlias() {
-        return alias;
+    public User getUser() {
+        return user;
     }
 
-    public void setAlias(String alias) {
-        this.alias = alias;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserCard{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", portrait='" + portrait + '\'' +
-                ", description='" + description + '\'' +
+                ", desc='" + description + '\'' +
                 ", sex=" + sex +
                 ", follows=" + follows +
                 ", following=" + following +
                 ", isFollow=" + isFollow +
                 ", modifyAt=" + modifyAt +
-                ", alias='" + alias + '\'' +
+                ", user=" + user +
                 '}';
+    }
+    public User build() {
+        if (user == null) {
+            User user = new User();
+            user.setId(id);
+            user.setName(name);
+            user.setPortrait(portrait);
+            user.setPhone(phone);
+            user.setDescription(description);
+            user.setSex(sex);
+            user.setFollow(isFollow);
+            user.setFollows(follows);
+            user.setFollowing(following);
+            user.setModifyAt(modifyAt);
+            this.user = user;
+        }
+        return user;
     }
 }

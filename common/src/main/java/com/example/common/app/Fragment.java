@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.common.widget.convention.PlaceHolderView;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -17,6 +19,12 @@ import butterknife.Unbinder;
 public abstract class Fragment extends android.support.v4.app.Fragment {
     protected View mRoot;
     protected Unbinder mRootUnbinder;
+    protected PlaceHolderView placeHolderView;
+    protected boolean isFirstInitData=true;
+
+    public void setPlaceHolderView(PlaceHolderView placeHolderView) {
+        this.placeHolderView = placeHolderView;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -43,7 +51,16 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if(isFirstInitData){
+            isFirstInitData=false;
+            onFirstInit();
+        }
         initData();
+    }
+
+    //首次初始化数据
+    protected void onFirstInit(){
+
     }
     protected boolean initArgs(Bundle bundle){
         return true;

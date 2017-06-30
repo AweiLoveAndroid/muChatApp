@@ -32,7 +32,7 @@ public class UserActivity extends Activity {
     }
 
     @Override
-    protected int getContentLayoutID() {
+    protected int getContentLayoutId() {
         return R.layout.activity_main2;
     }
     @Override

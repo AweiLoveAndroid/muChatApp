@@ -23,7 +23,7 @@ public class LaunchActivity extends com.example.common.app.Activity {
     private ColorDrawable backgroundDrawable;
 
     @Override
-    protected int getContentLayoutID() {
+    protected int getContentLayoutId() {
         return R.layout.activity_launch;
     }
 
@@ -109,13 +109,6 @@ public class LaunchActivity extends com.example.common.app.Activity {
                 skip();
                 return;
             }
-
-        }
-        //如果拿到了
-        if(!TextUtils.isEmpty(Account.getPushId())){
-            skip();
-            return;
-        }else {
 
         }
         //循环等待

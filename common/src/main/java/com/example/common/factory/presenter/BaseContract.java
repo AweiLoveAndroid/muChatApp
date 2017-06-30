@@ -2,6 +2,8 @@ package com.example.common.factory.presenter;
 
 import android.support.annotation.StringRes;
 
+import com.example.common.widget.recycler.RecyclerAdapter;
+
 /**
  * MVP模式中公共基本契约
  * Created by John on 2017/6/10.
@@ -17,5 +19,9 @@ public interface BaseContract {
     interface Presenter{
         void start();//公用的开始方法
         void destroy();//公用的销毁出发
+    }
+    interface RecyclerView<T extends Presenter,ViewModel> extends View<T>{
+        RecyclerAdapter<ViewModel>getRecyclerAdapter();
+        void onAdapterDataChanged();
     }
 }

@@ -8,6 +8,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.ViewTarget;
 import com.example.common.app.Activity;
+import com.example.common.widget.PortraitView;
 import com.example.factory.persistence.Account;
 import com.example.john.muchat.R;
 import com.example.john.muchat.activities.AccountActivity;
@@ -45,7 +47,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     @BindView(R.id.appbar)
     View appbar;
     @BindView(R.id.portrait)
-    View portrait;
+    PortraitView portrait;
     @BindView(R.id.title)
     TextView title;
     @BindView(R.id.layout_container)
@@ -59,7 +61,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     }
 
     @Override
-    protected int getContentLayoutID() {
+    protected int getContentLayoutId() {
         return R.layout.activity_main;
     }
 
@@ -88,16 +90,31 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
         super.initData();
         Menu menu=navigation.getMenu();
         menu.performIdentifierAction(R.id.action_home,0);//触发首次选中home
+        //初始化头像加载
+        portrait.setup(Glide.with(this),Account.getUser());
+    }
+
+    @OnClick(R.id.portrait)
+    void onPortraitClick(){
+        PersonalActivity.show(this,Account.getUserId());
     }
 
     @OnClick(R.id.search)
     void onSearchMenuClick() {
-
+        //在群的界面 时候，点击顶部的搜索就进入群搜索界面
+        int type=Objects.equals(navhelper.getCurrentTab().extra,R.string.title_group)?
+                SearchActivity.TYPE_GROUP:SearchActivity.TYPE_USER;
+        SearchActivity.show(this,type);
     }
 
     @OnClick(R.id.action)
     void onActionClick() {
-        AccountActivity.show(this);
+        //浮动按钮点击时，判断当前是群还是联系人界面
+        if(Objects.equals(navhelper.getCurrentTab().extra,R.string.title_group)){
+            //TODO 打开群创建界面
+        }else{
+            SearchActivity.show(this,SearchActivity.TYPE_USER);
+        }
     }
 
     private Navhelper<Integer> navhelper;

@@ -7,8 +7,11 @@ import com.example.factory.model.api.account.RspModel;
 import com.example.factory.model.api.user.UserUpdateModel;
 import com.example.factory.model.card.UserCard;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -44,6 +47,18 @@ public interface RemoteService {
     @PUT("user")
     Call<RspModel<UserCard>> userUpdate(@Body UserUpdateModel model);
 
+    //用户搜索的接口
+    @GET("user/search/{name}")
+    Call<RspModel<List<UserCard>>> userSearch(@Path("name")String name);
 
+    //用户关注的接口
+    @PUT("user/follow/{userId}")
+    Call<RspModel<UserCard>> userFollow(@Path("userId")String userId);
 
+    //获取联系人列表
+    @GET("user/contact")
+    Call<RspModel<List<UserCard>>>userContacts();
+
+    @GET("user/{userId}")
+    Call<RspModel<UserCard>> userFind(@Path("userId")String userId);
 }

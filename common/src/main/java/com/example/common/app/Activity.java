@@ -9,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.common.widget.convention.PlaceHolderView;
+
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -18,13 +20,15 @@ import butterknife.ButterKnife;
  */
 
 public abstract class Activity extends AppCompatActivity {
+    protected PlaceHolderView placeHolderView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWindow();//在界面初始化之前调用的窗口
         if(initArgs(getIntent().getExtras())){
-            setContentView(getContentLayoutID());
+            setContentView(getContentLayoutId());
+            initBefore();
             initWidget();
             initData();
         }else {
@@ -35,11 +39,16 @@ public abstract class Activity extends AppCompatActivity {
     protected void initWindow(){
 
     }
+
+    //初始化控件调用之前
+    protected void initBefore(){
+
+    }
     protected boolean initArgs(Bundle bundle){
         return true;
     }
     //得到当前界面的资源文件ID
-    protected abstract int getContentLayoutID();
+    protected abstract int getContentLayoutId();
     //初始化控件
     protected void initWidget(){
         ButterKnife.bind(this);
@@ -73,5 +82,9 @@ public abstract class Activity extends AppCompatActivity {
         }
         super.onBackPressed();
         finish();////导航界面点击返回时
+    }
+
+    public void setPlaceHolderView(PlaceHolderView placeHolderView){
+        this.placeHolderView=placeHolderView;
     }
 }

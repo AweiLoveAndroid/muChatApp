@@ -28,4 +28,6 @@ public interface DataSource {
     interface FailCallback{
         void onDataNotAvailable(@StringRes int strRes);
     }
+
+    void dispose();
 }

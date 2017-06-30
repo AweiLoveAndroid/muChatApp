@@ -160,6 +160,10 @@ public class Account {
         save(Factory.app());
     }
 
+    public static String getUserId(){
+        return getUser().getId();
+    }
+
     //获取token
     public static String getToken() {
         return token;

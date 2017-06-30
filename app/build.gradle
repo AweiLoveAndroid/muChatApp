@@ -44,11 +44,11 @@ dependencies {
     compile 'com.github.yalantis:ucrop:2.2.1-native'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'pub.devrel:easypermissions:0.4.0'
-    testCompile 'junit:junit:4.12'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile "com.squareup.retrofit2:converter-gson:2.3.0"
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.getui:sdk:2.9.3.0'
+    testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
-    compile "com.getui:sdk:2.9.3.0"
 }

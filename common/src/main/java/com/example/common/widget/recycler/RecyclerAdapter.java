@@ -2,7 +2,6 @@ package com.example.common.widget.recycler;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -209,5 +208,9 @@ public abstract class RecyclerAdapter<Data> extends
         public void onItemLongClick(ViewHolder holder, Data data) {
 
         }
+    }
+
+    public List<Data> getItems(){
+        return dataList;
     }
 }

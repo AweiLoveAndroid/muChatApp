@@ -50,7 +50,7 @@ public class AccountActivity extends Activity implements AccountTrigger {
     }
 
     @Override
-    protected int getContentLayoutID() {
+    protected int getContentLayoutId() {
         return R.layout.activity_account;
     }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 
 import com.example.common.factory.presenter.BaseContract;
+import com.example.common.widget.convention.PlaceHolderView;
 
 /**
  * Created by John on 2017/6/10.
@@ -13,6 +14,8 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
         extends Fragment implements BaseContract.View<Presenter>{
 
     protected Presenter presenter;
+
+    protected PlaceHolderView placeHolderView;
 
     protected abstract Presenter initPresenter();
 
@@ -25,14 +28,25 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
 
     @Override
     public void showError(int str) {
+        if(placeHolderView!=null){
+            placeHolderView.triggerError(str);
+            return;
+        }else {
+            Application.showToast(str);
+        }
         Application.showToast(str);
-
     }
 
     @Override
     public void showLoading() {
         //TODO 显示一个loading
+        if(placeHolderView!=null){
+            placeHolderView.triggerLoading();
+        }
+    }
 
+    public void setPlaceHolderView(PlaceHolderView placeHolderView) {
+        this.placeHolderView = placeHolderView;
     }
 
     @Override

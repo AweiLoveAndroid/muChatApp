@@ -1,20 +1,24 @@
 package com.example.factory.model.card;
 
+
+import com.example.common.factory.model.Author;
 import com.example.factory.model.db.User;
 
 import java.util.Date;
 
 /**
- * Created by John on 2017/6/19.
+ * 用户卡片，用于接收服务器返回
+ * @author qiujuer Email:qiujuer@live.cn
+ * @version 1.0.0
  */
-
-public class UserCard {
+public class UserCard implements Author {
     private String id;
     private String name;
     private String phone;
     private String portrait;
     private String description;
     private int sex = 0;
+
     // 用户关注人的数量
     private int follows;
 
@@ -26,9 +30,6 @@ public class UserCard {
 
     // 用户信息最后的更新时间
     private Date modifyAt;
-
-    // 缓存一个对应的User, 不能被GSON框架解析使用ø
-    private transient User user;
 
     public String getId() {
         return id;
@@ -110,30 +111,9 @@ public class UserCard {
         this.modifyAt = modifyAt;
     }
 
-    public User getUser() {
-        return user;
-    }
+    // 缓存一个对应的User, 不能被GSON框架解析使用ø
+    private transient User user;
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "UserCard{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", portrait='" + portrait + '\'' +
-                ", desc='" + description + '\'' +
-                ", sex=" + sex +
-                ", follows=" + follows +
-                ", following=" + following +
-                ", isFollow=" + isFollow +
-                ", modifyAt=" + modifyAt +
-                ", user=" + user +
-                '}';
-    }
     public User build() {
         if (user == null) {
             User user = new User();

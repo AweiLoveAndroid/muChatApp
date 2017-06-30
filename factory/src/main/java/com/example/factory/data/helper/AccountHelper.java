@@ -1,8 +1,6 @@
 package com.example.factory.data.helper;
 
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.common.factory.data.DataSource;
 import com.example.factory.Factory;
@@ -11,15 +9,10 @@ import com.example.factory.model.api.RegisterModel;
 import com.example.factory.model.api.account.AccountRspModel;
 import com.example.factory.model.api.account.LoginModel;
 import com.example.factory.model.api.account.RspModel;
-import com.example.factory.model.db.AppDataBase;
 import com.example.factory.model.db.User;
 import com.example.factory.net.NetWork;
 import com.example.factory.net.RemoteService;
 import com.example.factory.persistence.Account;
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
-import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
-import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,7 +91,8 @@ public class AccountHelper {
                 AccountRspModel accountRspModel = rspModel.getResult();
                 //获取我的信息
                 User user = accountRspModel.getUser();
-                user.save();
+                DbHelper.save(User.class,user);
+                //user.save();
                       /*  FlowManager.getModelAdapter(User.class).save(user);
                         DatabaseDefinition definition=FlowManager.getDatabase(AppDataBase.class);
                         definition.beginTransactionAsync(new ITransaction() {

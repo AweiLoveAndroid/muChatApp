@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.common.app.Application;
-import com.example.common.widget.GalleryView;
 import com.example.john.muchat.R;
+import com.example.john.muchat.activities.AccountActivity;
 import com.example.john.muchat.fragments.media.GalleryFragment;
 
 import java.util.List;
@@ -129,6 +129,8 @@ public class PermissionsFragment extends BottomSheetDialogFragment implements Ea
             Application.showToast(R.string.label_permission_ok);
             //在fragment中可以直接调用getview得到根布局
             refreshState(getView());
+            getActivity().finish();
+            AccountActivity.show(getContext());
         }else{
             EasyPermissions.requestPermissions(this,getString(R.string.title_assist_permissions),
                     RC,permissions);

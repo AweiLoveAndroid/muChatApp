@@ -49,7 +49,7 @@ public class MessageDispatcher implements MessageCenter {
     private class MessageCardHandler implements Runnable{
 
         private final MessageCard[] cards;
-        MessageCardHandler(MessageCard[]cards){
+        MessageCardHandler(MessageCard...cards){
             this.cards=cards;
         }
 

@@ -1,5 +1,7 @@
 package com.example.factory.data.helper;
 
+import android.util.Log;
+
 import com.example.common.factory.data.DataSource;
 import com.example.common.utils.CollectionUtil;
 import com.example.factory.Factory;
@@ -60,6 +62,7 @@ public class UserHelper {
             @Override
             public void onResponse(Call<RspModel<List<UserCard>>> call, Response<RspModel<List<UserCard>>> response) {
                 RspModel<List<UserCard>> rspModel=response.body();
+                Log.d("UserHelper",response.toString());
                 if(rspModel.success()){
                     List<UserCard>cards=rspModel.getResult();
                     if(cards==null||cards.size()==0)

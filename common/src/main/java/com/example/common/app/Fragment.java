@@ -62,8 +62,7 @@ public abstract class Fragment extends android.support.v4.app.Fragment {
     protected void onFirstInit(){
 
     }
-    protected boolean initArgs(Bundle bundle){
-        return true;
+    protected void initArgs(Bundle bundle){
     }
 
     protected abstract int getContentLayoutID();

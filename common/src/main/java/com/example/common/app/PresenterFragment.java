@@ -1,7 +1,6 @@
 package com.example.common.app;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 
 import com.example.common.factory.presenter.BaseContract;
 import com.example.common.widget.convention.PlaceHolderView;
@@ -52,5 +51,12 @@ public abstract class PresenterFragment<Presenter extends BaseContract.Presenter
     @Override
     public void setPresenter(Presenter presenter) {
         this.presenter=presenter;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(presenter!=null)
+            presenter.destroy();
     }
 }

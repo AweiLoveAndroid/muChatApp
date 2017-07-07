@@ -21,7 +21,7 @@ import java.util.List;
 
 public abstract class BaseDbRepository<Data extends BaseDbModel<Data>> implements DbDataSource<Data>
 ,DbHelper.ChangedListener<Data>,QueryTransaction.QueryResultListCallback<Data>{
-    private List<Data>dataList=new LinkedList<>();//当前缓存的数据
+    protected LinkedList<Data>dataList=new LinkedList<>();//当前缓存的数据
     private SuccessCallback<List<Data>>callback;
     private Class<Data>dataClass;//当前泛型对应的真实class信息
 

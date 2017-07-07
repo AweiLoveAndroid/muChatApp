@@ -1,2 +1,7 @@
 Access Key ID:LTAIq8r1Xk4P0J6m
 Access Key Secret:nkqdmy8KcdrERQNvZgzRftw95l3ldz 
+
+AppID:KkQPxYEsw99WbeiHiOcoN7
+AppSecret:C0mQjT6g8772f4rNG3fIk9
+AppKey:bDBs2GWdkl9B56YL5GwCk1
+MasterSecret:06o4u7OdCR6W0umZaBKVr4

@@ -60,6 +60,5 @@ public class BaseRecyclerPresenter<ViewMode,View extends BaseContract.RecyclerVi
         adapter.getItems().addAll(dataList);
         view.onAdapterDataChanged();//通知界面刷新占位布局
         diffResult.dispatchUpdatesTo(adapter);//进行增量更新
-
     }
 }

@@ -6,13 +6,14 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.widget.LinearLayout;
+
+import net.qiujuer.widget.airpanel.AirPanelLinearLayout;
 
 /**
  * Created by John on 2017/7/2.
  */
 
-public class MessageLayout extends LinearLayout {
+public class MessageLayout extends AirPanelLinearLayout {
     public MessageLayout(Context context) {
         super(context);
     }

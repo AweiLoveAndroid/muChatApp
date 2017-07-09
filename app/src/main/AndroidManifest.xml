@@ -60,12 +60,18 @@
         <activity
             android:name=".activities.MessageActivity"
             android:label="@string/title_activity_message"
-            android:theme="@style/AppTheme.TransStatusBar"></activity>
+            android:theme="@style/AppTheme.TransStatusBar"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".activities.PersonalActivity"
             android:label="PersonalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransStatusBar" />
+        <activity
+            android:name=".activities.GroupCreateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Group.Create" />
+        <activity android:name=".activities.GroupMemberActivity"></activity>
     </application>
 
 </manifest>

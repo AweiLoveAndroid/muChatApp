@@ -4,11 +4,8 @@ package com.example.john.muchat.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,8 +22,6 @@ import com.example.common.app.Activity;
 import com.example.common.widget.PortraitView;
 import com.example.factory.persistence.Account;
 import com.example.john.muchat.R;
-import com.example.john.muchat.activities.AccountActivity;
-import com.example.john.muchat.assist.PermissionsFragment;
 import com.example.john.muchat.fragments.main.ActiveFragment;
 import com.example.john.muchat.fragments.main.ContactFragment;
 import com.example.john.muchat.fragments.main.GroupFragment;
@@ -111,7 +106,7 @@ public class MainActivity extends Activity implements BottomNavigationView.OnNav
     void onActionClick() {
         //浮动按钮点击时，判断当前是群还是联系人界面
         if(Objects.equals(navhelper.getCurrentTab().extra,R.string.title_group)){
-            //TODO 打开群创建界面
+            GroupCreateActivity.show(this);
         }else{
             SearchActivity.show(this,SearchActivity.TYPE_USER);
         }

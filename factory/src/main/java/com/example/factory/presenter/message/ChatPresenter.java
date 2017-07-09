@@ -50,7 +50,7 @@ public class ChatPresenter<View extends ChatContract.View>
     }
 
     @Override
-    public void PushAudio(String path) {
+    public void pushAudio(String path) {
         //TODO
     }
 

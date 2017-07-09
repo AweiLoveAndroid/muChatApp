@@ -4,11 +4,21 @@
     android:layout_height="match_parent"
     tools:context="com.example.john.muchat.fragments.main.GroupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:textColor="@color/colorAccent"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="group" />
+        android:background="@drawable/bg_main_recycler"
+        android:clipToPadding="false"
+        android:elevation="1dp"
+        android:outlineProvider="bounds"
+        android:padding="@dimen/len_4"
+        android:visibility="gone"
+        tools:targetApi="lollipop" />
+
+    <com.example.common.widget.EmptyView
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

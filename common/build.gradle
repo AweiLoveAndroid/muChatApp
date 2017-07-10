@@ -38,6 +38,9 @@ dependencies {
     compile 'net.qiujuer.genius:kit-handler:2.0.0'
     compile 'net.qiujuer.widget:airpanel:1.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile "net.qiujuer.lame:lame:1.0.0"
     testCompile 'junit:junit:4.12'
     compile project(':lang')
+    compile project(':face-res')
+    compile 'com.google.code.gson:gson:2.8.0'
 }

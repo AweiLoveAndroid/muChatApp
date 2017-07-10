@@ -33,7 +33,7 @@
     </FrameLayout>
 
     <com.example.common.widget.PortraitView
-        android:id="@+id/portrait"
+        android:id="@+id/im_portrait"
         android:layout_width="@dimen/portraitSize"
         android:layout_height="@dimen/portraitSize"
         android:layout_gravity="start"

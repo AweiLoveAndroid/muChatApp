@@ -1,6 +1,7 @@
 package com.example.factory.presenter.message;
 
 import android.support.v7.util.DiffUtil;
+import android.text.TextUtils;
 
 import com.example.factory.data.helper.MessageHelper;
 import com.example.factory.data.message.MessageDataSource;
@@ -50,13 +51,34 @@ public class ChatPresenter<View extends ChatContract.View>
     }
 
     @Override
-    public void pushAudio(String path) {
-        //TODO
+    public void pushAudio(String path,long time) {
+        if(TextUtils.isEmpty(path)){
+            return;
+        }
+
+        // 构建一个新的消息
+        MessageCreateModel model = new MessageCreateModel.Builder()
+                .receiver(receiverId, receiverType)
+                .content(path, Message.TYPE_AUDIO)
+                .attach(String.valueOf(time))
+                .build();
+
+        // 进行网络发送
+        MessageHelper.push(model);
     }
 
     @Override
     public void pushImages(String[] paths) {
-
+        if(paths==null||paths.length==0)
+            return;
+        //此时路径是本地的手机上的路径
+        for (String path : paths) {
+            MessageCreateModel model = new MessageCreateModel.Builder()
+                    .receiver(receiverId, receiverType)
+                    .content(path, Message.TYPE_PIC)
+                    .build();
+            MessageHelper.push(model);//进行网络发送
+        }
     }
 
     @Override

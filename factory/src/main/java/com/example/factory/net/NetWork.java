@@ -21,10 +21,34 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class NetWork {
+    private OkHttpClient client;
     private static NetWork instance;
     private Retrofit retrofit;
     static {
         instance=new NetWork();
+    }
+    public static OkHttpClient getClient(){
+        if(instance.client!=null){
+            return instance.client;
+        }
+        OkHttpClient client=new OkHttpClient.Builder().
+                //给请求添加拦截器
+                        addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request original=chain.request();//拿到请求
+                        Request.Builder builder=original.newBuilder();//重新进行builder
+                        if(!TextUtils.isEmpty(Account.getToken())){
+                            //注入一个token
+                            builder.addHeader("token",Account.getToken());
+                        }
+                        builder.addHeader("Content-Type","application/json");
+                        Request newRequest=builder.build();
+                        return chain.proceed(newRequest);
+                    }
+                }).build();
+        instance.client=client;
+        return instance.client;
     }
 
     private NetWork() {
@@ -36,22 +60,7 @@ public class NetWork {
         if(instance.retrofit!=null){
             return instance.retrofit;
         }
-        OkHttpClient client=new OkHttpClient.Builder().
-                //给请求添加拦截器
-                addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request original=chain.request();//拿到请求
-                Request.Builder builder=original.newBuilder();//重新进行builder
-                if(!TextUtils.isEmpty(Account.getToken())){
-                    //注入一个token
-                    builder.addHeader("token",Account.getToken());
-                }
-                builder.addHeader("Content-Type","application/json");
-                Request newRequest=builder.build();
-                return chain.proceed(newRequest);
-            }
-        }).build();
+        OkHttpClient client=getClient();
         Retrofit.Builder builder=new Retrofit.Builder();
         //设置电脑连接
         instance.retrofit= builder.baseUrl(Common.Constance.API_URL)

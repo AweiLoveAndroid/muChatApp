@@ -20,7 +20,7 @@ import java.util.Date;
 
 public class UploadHelper {
     //存储区域
-    private static final String ENDPOINT = "http://oss-cn-shanghai.aliyuncs.com";
+    public static final String ENDPOINT = "http://oss-cn-shanghai.aliyuncs.com";
     private static final String BUCKET_NAME="muchat2017";
 
     private static OSS getClient() {

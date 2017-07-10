@@ -9,14 +9,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.common.Face.Face;
+import com.example.common.app.Application;
 import com.example.common.app.PresenterFragment;
+import com.example.common.tools.AudioPlayHelper;
 import com.example.common.widget.PortraitView;
 import com.example.common.widget.adapter.TextWatcherAdapter;
 import com.example.common.widget.recycler.RecyclerAdapter;
@@ -24,15 +30,20 @@ import com.example.factory.model.db.Message;
 import com.example.factory.model.db.User;
 import com.example.factory.persistence.Account;
 import com.example.factory.presenter.message.ChatContract;
+import com.example.factory.utils.FileCache;
 import com.example.john.muchat.R;
 import com.example.john.muchat.activities.MessageActivity;
 import com.example.john.muchat.fragments.panel.PanelFragment;
 
+import net.qiujuer.genius.kit.handler.Run;
+import net.qiujuer.genius.kit.handler.runable.Action;
+import net.qiujuer.genius.ui.Ui;
 import net.qiujuer.genius.ui.compat.UiCompat;
 import net.qiujuer.genius.ui.widget.Loading;
 import net.qiujuer.widget.airpanel.AirPanel;
 import net.qiujuer.widget.airpanel.Util;
 
+import java.io.File;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -45,7 +56,11 @@ import butterknife.OnClick;
 public abstract class ChatFragment<InitModel>
         extends PresenterFragment<ChatContract.Presenter>
         implements AppBarLayout.OnOffsetChangedListener,
-        ChatContract.View<InitModel> {
+        ChatContract.View<InitModel>, PanelFragment.PanelCallback {
+
+    // 语音的基础
+    private FileCache<AudioHolder> mAudioFileCache;
+    private AudioPlayHelper<AudioHolder> mAudioPlayer;
 
     protected String mReceiverId;
     protected Adapter mAdapter;
@@ -109,7 +124,7 @@ public abstract class ChatFragment<InitModel>
             }
         });
         mPanelFragment = (PanelFragment) getChildFragmentManager().findFragmentById(R.id.frag_panel);
-
+        mPanelFragment.setup(this);
 
         initToolbar();
         initAppbar();
@@ -119,6 +134,59 @@ public abstract class ChatFragment<InitModel>
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new Adapter();
         mRecyclerView.setAdapter(mAdapter);
+        //添加适配器监听器
+        mAdapter.setListener(new RecyclerAdapter.AdapterListenerImpl<Message>() {
+            @Override
+            public void onItemClick(RecyclerAdapter.ViewHolder holder, Message message) {
+                if (message.getType() == Message.TYPE_AUDIO &&
+                        holder instanceof ChatFragment.AudioHolder)
+                    mAudioFileCache.download((AudioHolder) holder,message.getContent());
+            }
+        });
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // 进入界面的时候就进行初始化
+        mAudioPlayer = new AudioPlayHelper<>(new AudioPlayHelper.RecordPlayListener<AudioHolder>() {
+            @Override
+            public void onPlayStart(AudioHolder audioHolder) {
+                // 范型作用就在于此
+                audioHolder.onPlayStart();
+            }
+
+            @Override
+            public void onPlayStop(AudioHolder audioHolder) {
+                // 直接停止
+                audioHolder.onPlayStop();
+            }
+
+            @Override
+            public void onPlayError(AudioHolder audioHolder) {
+                // 提示失败
+                Application.showToast(R.string.toast_audio_play_error);
+            }
+        });
+
+        // 下载工具类
+        mAudioFileCache = new FileCache<>("audio/cache", "mp3", new FileCache.CacheListener<AudioHolder>() {
+            @Override
+            public void onDownloadSucceed(final AudioHolder holder, final File file) {
+                Run.onUiAsync(new Action() {
+                    @Override
+                    public void call() {
+                        // 主线程播放
+                        mAudioPlayer.trigger(holder, file.getAbsolutePath());
+                    }
+                });
+            }
+
+            @Override
+            public void onDownloadFailed(AudioHolder holder) {
+                Application.showToast(R.string.toast_download_error);
+            }
+        });
+
     }
 
     @Override
@@ -126,6 +194,11 @@ public abstract class ChatFragment<InitModel>
         super.initData();
         // 开始进行初始化操作
         presenter.start();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mAudioPlayer.destroy();
     }
 
     // 初始化Toolbar
@@ -200,6 +273,24 @@ public abstract class ChatFragment<InitModel>
     @Override
     public void onAdapterDataChanged() {
         // 界面没有占位布局，Recycler是一直显示的，所有不需要做任何事情
+    }
+
+    @Override
+    public EditText getInputEditText() {
+        // 返回输入框
+        return mContent;
+    }
+
+    @Override
+    public void onSendGallery(String[] paths) {
+        // 图片回调回来
+        presenter.pushImages(paths);
+    }
+
+    @Override
+    public void onRecordDone(File file, long time) {
+        //语音回掉回来
+        presenter.pushAudio(file.getAbsolutePath(), time);
     }
 
     // 内容的适配器
@@ -318,7 +409,7 @@ public abstract class ChatFragment<InitModel>
 
     // 文字的Holder
     class TextHolder extends BaseHolder {
-        @BindView(R.id.txt_content)
+        @BindView(R.id.content)
         TextView mContent;
 
         public TextHolder(View itemView) {
@@ -329,14 +420,22 @@ public abstract class ChatFragment<InitModel>
         protected void onBind(Message message) {
             super.onBind(message);
 
-            // 把内容设置到布局上
-            mContent.setText(message.getContent());
+            Spannable spannable = new SpannableString(message.getContent());
 
+            // 解析表情
+            Face.decode(mContent, spannable, (int) Ui.dipToPx(getResources(), 20));
+
+            // 把内容设置到布局上
+            mContent.setText(spannable);
         }
     }
 
     // 语音的Holder
     class AudioHolder extends BaseHolder {
+        @BindView(R.id.txt_content)
+        TextView mContent;
+        @BindView(R.id.im_audio_track)
+        ImageView mAudioTrack;
 
         public AudioHolder(View itemView) {
             super(itemView);
@@ -345,12 +444,46 @@ public abstract class ChatFragment<InitModel>
         @Override
         protected void onBind(Message message) {
             super.onBind(message);
-            // TODO
+            // long 30000
+            String attach = TextUtils.isEmpty(message.getAttach()) ? "0" :
+                    message.getAttach();
+            mContent.setText(formatTime(attach));
+        }
+
+        // 当播放开始
+        void onPlayStart() {
+            // 显示
+            mAudioTrack.setVisibility(View.VISIBLE);
+        }
+
+        // 当播放停止
+        void onPlayStop() {
+            // 占位并隐藏
+            mAudioTrack.setVisibility(View.INVISIBLE);
+        }
+
+        private String formatTime(String attach) {
+            float time;
+            try {
+                // 毫秒转换为秒
+                time = Float.parseFloat(attach) / 1000f;
+            } catch (Exception e) {
+                time = 0;
+            }
+            // 12000/1000f = 12.0000000
+            // 取整一位小数点 1.234 -> 1.2 1.02 -> 1.0
+            String shortTime = String.valueOf(Math.round(time * 10f) / 10f);
+            // 1.0 -> 1     1.2000 -> 1.2
+            shortTime = shortTime.replaceAll("[.]0+?$|0+?$", "");
+            return String.format("%s″", shortTime);
         }
     }
 
     // 图片的Holder
     class PicHolder extends BaseHolder {
+        @BindView(R.id.im_image)
+        ImageView mContent;
+
 
         public PicHolder(View itemView) {
             super(itemView);
@@ -359,7 +492,14 @@ public abstract class ChatFragment<InitModel>
         @Override
         protected void onBind(Message message) {
             super.onBind(message);
-            // TODO
+            // 当是图片类型的时候，Content中就是具体的地址
+            String content = message.getContent();
+
+            Glide.with(ChatFragment.this)
+                    .load(content)
+                    .fitCenter()
+                    .into(mContent);
+
         }
     }
 

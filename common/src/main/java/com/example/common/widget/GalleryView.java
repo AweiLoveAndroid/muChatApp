@@ -263,7 +263,6 @@ public class GalleryView extends RecyclerView {
             select.setChecked(image.isSelect);
         }
     }
-
     public interface SelectionChangeListener{
         void onSelectCountChanged(int count);
     }

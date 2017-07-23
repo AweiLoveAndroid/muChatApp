@@ -6,3 +6,8 @@ AppSecret:C0mQjT6g8772f4rNG3fIk9
 AppKey:bDBs2GWdkl9B56YL5GwCk1
 MasterSecret:06o4u7OdCR6W0umZaBKVr4
 Ô¶³ÌÁ¬½ÓÃÜÂë£º 239987
+ÔÆ·þÎñÆ÷ÃÜÂë:Crs669157
+ÔÆ·þÎñÆ÷Êý¾Ý¿âÃÜÂë:Bklv123!
+unixÕË»§john ÃÜÂëcrs669157
+unixÃÜÂë123456
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'uahello'@'%' IDENTIFIED BY 'MyNewPass4!' WITH GRANT OPTION;
